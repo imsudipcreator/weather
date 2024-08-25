@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="search" placeholder="Enter city name" spellcheck="false" >
+             <button><i class='bx bx-search'></i></button>
+        </div>
+        <div class="weather">
+            <img src="drizzlea.gif" >
+            <div class="temp">28°C</div>
+            <div class="city">Jhargram</div>
+            <div class="details">
+                <div class="col">
+                    <img src="drop.gif" >
+                <div>
+                    <div class="humidity">50%</div>
+                    <p>Humidity</p>
+                </div>
+                </div>
+                <div class="col">
+                    <img src="winda.gif" >
+                    <div>
+                        <div class="wind">15km/h</div>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="resilience.gif" >
+                    <div>
+                        <div class="pressure">1024mb</div>
+                        <p>Pressure</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="flood.gif" >
+                    <div>
+                        <div class="sea-level">1024mb</div>
+                        <p>Sea level</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+<script>
+
+const apiKey="7fd0006375949e88a039a545c881f02f";
+const apiUrl="https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+const searchBox=document.querySelector(".search input");
+const searchBtn=document.querySelector(".search button");
+const weatherImg=document.querySelector(".weather img");
+
+
+async function checkWeather(city) {
+    const response = await fetch (apiUrl + city +`&appid=${apiKey}` );
+    var data= await response.json();
+
+    console.log(data);
+    document.querySelector(".city").innerHTML=data.name;
+    document.querySelector(".temp").innerHTML=Math.round(data.main.temp) +"°C";
+    document.querySelector(".humidity").innerHTML=data.main.humidity+" %";
+    document.querySelector(".wind").innerHTML=data.wind.speed +" km/h";
+    document.querySelector(".pressure").innerHTML=data.main.pressure +" mb";
+    document.querySelector(".sea-level").innerHTML=data.main.sea_level +" mb";
+
+    if(data.weather[0].main=="Clouds"){
+        weatherImg.src="cloudsa.gif"
+    }else if(data.weather[0].main=="Rain"){
+        weatherImg.src="raina.gif"
+    }
+    else if(data.weather[0].main=="Clear"){
+        weatherImg.src="suna.gif"
+    }
+    else if(data.weather[0].main=="Mist"){
+        weatherImg.src="mista.gif"
+    }
+    else if(data.weather[0].main=="Drizzle"){
+        weatherImg.src="drizzlea.gif"
+    }
+
+    document.querySelector(".weather").style.display="flex";
+    
+}
+
+
+searchBtn.addEventListener("click",()=>{
+    checkWeather(searchBox.value);
+}
+
+)
+
+</script>
+
+
+
+</body>
+</html>
